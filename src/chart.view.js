@@ -2,14 +2,11 @@ import { Chart } from "chart.js/auto";
 
 const canvas = document.getElementById("pieChart");
 
-// Chart.defaults.global.defaultFontFamily = "Lato";
-// Chart.defaults.global.defaultFontSize = 18;
-
 const budgetData = {
-  labels: ["Alimentari", "Trasporti", "Svago", "Salute", "Altro"],
+  labels: [],
   datasets: [
     {
-      data: [133.3, 86.2, 52.2, 51.2, 50.2],
+      data: [],
       backgroundColor: ["#FF6384", "#63FF84", "#84FF63", "#8463FF", "#6384FF"],
     },
   ],
@@ -20,25 +17,48 @@ const pieChart = new Chart(canvas, {
   data: budgetData,
 });
 
+export const updateChart = function (category, amount, type) {
+  if (type !== "Entrata") {
+    // Considera solo le spese
+    const index = pieChart.data.labels.indexOf(category);
+    if (index !== -1) {
+      pieChart.data.datasets[0].data[index] += parseFloat(amount);
+    } else {
+      pieChart.data.labels.push(category);
+      pieChart.data.datasets[0].data.push(parseFloat(amount));
+    }
+    pieChart.update();
+  }
+};
+
 const columnCanvas = document.getElementById("column-chart");
 
-const mixedChart = new Chart(columnCanvas, {
+const columnChart = new Chart(columnCanvas, {
   data: {
     datasets: [
       {
         type: "bar",
         label: "Bar Dataset",
-        data: [133.3, 86.2, 52.2, 51.2, 50.2],
-      },
-      {
-        type: "line",
-        label: "Line Dataset",
-        data: [50, 50, 50, 50],
+        data: [],
       },
     ],
-    labels: ["Alimentari", "Trasporti", "Svago", "Salute", "Altro"],
+    labels: [],
   },
 });
+
+export const updateColumnChart = function (category, amount, type) {
+  if (type !== "Entrata") {
+    // Considera solo le spese
+    const index = columnChart.data.labels.indexOf(category);
+    if (index !== -1) {
+      columnChart.data.datasets[0].data[index] += parseFloat(amount);
+    } else {
+      columnChart.data.labels.push(category);
+      columnChart.data.datasets[0].data.push(parseFloat(amount));
+    }
+    columnChart.update();
+  }
+};
 
 let labels = ["Alimentari", "Trasporti", "Svago", "Salute", "Altro"];
 let dataset1Data = [10, 25, 13, 18, 30];

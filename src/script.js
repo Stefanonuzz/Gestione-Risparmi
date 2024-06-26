@@ -1,5 +1,7 @@
 import { addToTable } from "./view";
 import { addToTotal } from "./view";
+import { updateChart } from "./chart.view";
+import { updateColumnChart } from "./chart.view";
 
 class Expense {
   constructor(amount, category, date, description, type, id) {
@@ -42,9 +44,10 @@ const incomeCategories = [
   { value: "Altro", text: "Altro" },
 ];
 
-const expenseCategories = [
+export const expenseCategories = [
   { value: "Alimentari", text: "Alimentari" },
   { value: "Trasporti", text: "Trasporti" },
+  { value: "Salute", text: "Salute" },
   { value: "Svago", text: "Svago" },
   { value: "Altro", text: "Altro" },
 ];
@@ -104,7 +107,8 @@ document.getElementById("income-form").addEventListener("submit", (event) => {
     type,
     onDeleteCallback
   );
-
+  updateChart(category, amount, type);
+  updateColumnChart(category, amount, type);
   addToTotal(type, amount);
 
   console.log(newIncome);
