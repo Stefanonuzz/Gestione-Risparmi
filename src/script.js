@@ -20,6 +20,11 @@ class OperationsList {
 const operations = new OperationsList();
 
 const onDeleteCallback = (expenseId) => {
+  const expense = operations.expenseList.find((exp) => exp.id === expenseId);
+
+  if (expense) {
+    addToTotal(expense.type, -expense.amount);
+  }
   operations.expenseList = operations.expenseList.filter(
     (exp) => exp.id !== expenseId
   );

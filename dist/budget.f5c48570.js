@@ -602,6 +602,8 @@ class OperationsList {
 }
 const operations = new OperationsList();
 const onDeleteCallback = (expenseId)=>{
+    const expense = operations.expenseList.find((exp)=>exp.id === expenseId);
+    if (expense) (0, _view.addToTotal)(expense.type, -expense.amount);
     operations.expenseList = operations.expenseList.filter((exp)=>exp.id !== expenseId);
 };
 const form = document.getElementById("income-form");
