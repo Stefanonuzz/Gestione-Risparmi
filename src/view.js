@@ -1,3 +1,10 @@
+import {
+  deleteFromPieChart,
+  deleteFromColumnChart,
+  deleteFromLineChart,
+} from "./chart.view";
+import { pieChart } from "./chart.view";
+
 export const addToTable = function (
   date,
   description,
@@ -37,6 +44,9 @@ export const addToTable = function (
     const rowId = event.target.dataset.rowId;
     row.remove();
     onDeleteCallback(rowId);
+    deleteFromPieChart(category, amount);
+    deleteFromColumnChart(category, amount);
+    deleteFromLineChart(category, amount);
   });
 };
 
