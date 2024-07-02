@@ -2,7 +2,6 @@ import { addToTable } from "./view";
 import { addToTotal } from "./view";
 import { updateChart, updateLineChart } from "./chart.view";
 import { updateColumnChart } from "./chart.view";
-import { format, compareAsc } from "date-fns";
 
 class Expense {
   constructor(amount, category, date, description, type, id) {
