@@ -73,7 +73,7 @@ const columnChart = new Chart(columnCanvas, {
     datasets: [
       {
         type: "bar",
-        label: "Uscite",
+        label: [],
         data: [],
         backgroundColor: [
           "#FF6384",
@@ -114,8 +114,6 @@ export const deleteFromColumnChart = function (category, amount) {
   }
 };
 
-let labels = [];
-
 let ctx = document.getElementById("line-chart").getContext("2d");
 const lineChart = new Chart(ctx, {
   type: "line",
@@ -123,92 +121,43 @@ const lineChart = new Chart(ctx, {
     labels: [],
     datasets: [
       {
-        label: "Solid Line",
+        label: "Spese nel tempo",
         data: [],
-        borderColor: "blue",
-        borderWidth: 2,
         fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        // tension: 0.1,
       },
     ],
-  },
-
-  options: {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem) {
-            const dataset = tooltipItem.chart.data.datasets[0];
-            const totalUscite = dataset.data.reduce(
-              (acc, currValue) => acc + currValue,
-              0
-            );
-
-            return `Uscite totali: €${totalUscite.toFixed(2)}`;
-          },
-        },
-      },
-    },
-  },
-
-  responsive: true,
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: "Categorie",
-        font: {
-          padding: 4,
-          size: 20,
-          weight: "bold",
-          family: "Arial",
-        },
-        color: "darkblue",
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: "Valori",
-        font: {
-          size: 20,
-          weight: "bold",
-          family: "Arial",
-        },
-        color: "darkblue",
-      },
-      beginAtZero: true,
-      scaleLabel: {
-        display: true,
-        labelString: "Values",
-      },
-    },
   },
 });
 
 export const updateLineChart = function (amount, type) {
-  if (type !== "Entrata") {
-    const categoryLabel = "Uscite";
-    const index = lineChart.data.labels.indexOf(categoryLabel);
+  const currentData = lineChart.data.datasets[0].data;
 
-    if (index !== -1) {
-      lineChart.data.datasets[0].data[index] += parseFloat(amount);
-    } else {
-      lineChart.data.labels.push(categoryLabel);
-      lineChart.data.datasets[0].data.push(parseFloat(amount));
-    }
-
-    lineChart.update();
+  if (type === "Entrata") {
+    const previousData = currentData[currentData.length - 1] || 0;
+    const newData = previousData + parseFloat(amount);
+    lineChart.data.datasets[0].data.push(newData);
+  } else {
+    const previousData = currentData[currentData.length - 1] || 0;
+    const newData = previousData - parseFloat(amount);
+    lineChart.data.datasets[0].data.push(newData);
   }
+
+  const currentLabels = lineChart.data.labels;
+  const nextLabel = "";
+  lineChart.data.labels.push(nextLabel);
+
+  lineChart.update();
 };
 
-export const deleteFromLineChart = function (category, amount) {
-  const index = lineChart.data.labels.indexOf(category);
-  if (index !== -1) {
-    lineChart.data.datasets[0].data[index] -= parseFloat(amount);
-    if (lineChart.data.datasets[0].data[index] <= 0) {
-      lineChart.data.labels.splice(index, 1);
-      lineChart.data.datasets[0].data.splice(index, 1);
-    }
-    lineChart.update();
-  }
+export const deleteFromLineChart = function (index) {
+  const currentData = lineChart.data.datasets[0].data;
+  const currentLabels = lineChart.data.labels;
+
+  currentData.splice(index, 1);
+
+  currentLabels.splice(index, 1);
+
+  lineChart.update();
 };

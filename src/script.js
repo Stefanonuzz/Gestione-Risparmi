@@ -2,6 +2,7 @@ import { addToTable } from "./view";
 import { addToTotal } from "./view";
 import { updateChart, updateLineChart } from "./chart.view";
 import { updateColumnChart } from "./chart.view";
+import { format, compareAsc } from "date-fns";
 
 class Expense {
   constructor(amount, category, date, description, type, id) {
@@ -109,7 +110,7 @@ document.getElementById("income-form").addEventListener("submit", (event) => {
   );
   updateChart(category, amount, type);
   updateColumnChart(category, amount, type);
-  updateLineChart(category, amount, type);
+  updateLineChart(amount, type);
 
   addToTotal(type, amount);
 

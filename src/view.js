@@ -3,7 +3,7 @@ import {
   deleteFromColumnChart,
   deleteFromLineChart,
 } from "./chart.view";
-import { pieChart } from "./chart.view";
+import { format, compareAsc } from "date-fns";
 
 export const addToTable = function (
   date,
@@ -26,9 +26,10 @@ export const addToTable = function (
 
   // Assegnazione valore (positivo/negativo)
   const displayAmount = type === "Entrata" ? `${amount}€` : `-${amount}€`;
+  const dateFormatted = format(new Date(date), "dd/MM/yyyy");
 
   row.innerHTML = `
-    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${date}</th>
+    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${dateFormatted}</th>
     <td class="px-6 py-4">${description}</td>
     <td class="px-6 py-4">${category}</td>
     <td class="px-6 py-4 ${amountClass}">${displayAmount}</td>
