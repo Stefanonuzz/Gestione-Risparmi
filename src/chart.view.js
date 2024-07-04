@@ -86,6 +86,13 @@ const columnChart = new Chart(columnCanvas, {
     ],
     labels: [],
   },
+  options: {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  },
 });
 
 export const updateColumnChart = function (category, amount, type) {
@@ -128,6 +135,9 @@ const lineChart = new Chart(ctx, {
         // tension: 0.1,
       },
     ],
+  },
+  options: {
+    maintainAspectRatio: false,
   },
 });
 

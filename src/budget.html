@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4 max-h-96">
         <!-- FORM SECTION -->
         <div class="form-container">
           <div class="bg-white p-5 rounded-lg shadow-md">
@@ -158,20 +158,22 @@
         <!-- GRAFICO A COLONNE -->
         <div class="bg-white p-4 pb-0 rounded-lg shadow-md">
           <h2 class="text-xl font-bold mb-12">Grafico a colonne</h2>
-          <canvas class="" id="column-chart"></canvas>
+          <div>
+            <canvas class="max-h-full" id="column-chart"></canvas>
+          </div>
         </div>
 
         <!-- DIAGRAMMA A TORTA -->
         <div class="bg-white p-4 pb-0 rounded-lg shadow-md">
           <h2 class="text-xl font-bold mb-4">Diagramma a torta</h2>
           <div class="h-3/4 grid justify-items-center">
-            <canvas id="pieChart"></canvas>
+            <canvas class="max-h-full" id="pieChart"></canvas>
           </div>
         </div>
       </div>
 
       <!-- TABELLA -->
-      <div class="h-72 grid grid-cols-2 gap-8 ounded-lg shadow-md mt-6">
+      <div class="h-72 grid grid-cols-2 gap-8 ounded-lg shadow-md">
         <div class="bg-white p-4 pb-0 rounded-lg shadow-md overflow-scroll">
           <h1 class="text-xl font-bold mb-6">Elenco delle spese</h1>
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -254,9 +256,13 @@
         </div>
         <!-- GRAFICO A LINEA -->
 
-        <div class="bg-white p-4 pb-0 rounded-lg shadow-md overflow-auto">
+        <div
+          class="h-72 bg-white p-4 pb-0 rounded-lg shadow-md overflow-x-scroll"
+        >
           <h2 class="text-xl font-bold mb-5">Grafico a linea</h2>
-          <canvas id="line-chart"> </canvas>
+          <div class="">
+            <canvas class="max-h-full" id="line-chart"> </canvas>
+          </div>
         </div>
       </div>
     </div>

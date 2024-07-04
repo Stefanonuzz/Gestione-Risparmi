@@ -4,6 +4,7 @@ import {
   deleteFromLineChart,
 } from "./chart.view";
 import { format, compareAsc } from "date-fns";
+import { onDeleteCallback } from "./script";
 
 export const addToTable = function (
   date,
@@ -12,7 +13,8 @@ export const addToTable = function (
   amount,
   id,
   type,
-  onDeleteCallback
+  onDeleteCallback,
+  loadingAll = false
 ) {
   const table = document.getElementById("expense-list");
 
@@ -36,7 +38,7 @@ export const addToTable = function (
     <td class="px-6 py-4">
       <ion-icon class="trash-icon mr-4 cursor-pointer" name="trash-outline" data-row-id="${id}"></ion-icon>
       <ion-icon class="cursor-pointer" name="create-outline"></ion-icon>
-    </td>
+      </td>
   `;
   table.appendChild(row);
 
@@ -49,7 +51,41 @@ export const addToTable = function (
     deleteFromColumnChart(category, amount);
     deleteFromLineChart(category, amount);
   });
+
+  if (!loadingAll) {
+    // Local Storage Tabella
+    const storeData = loadFromLocalStorage("tableData");
+    storeData.push({ date, description, category, amount, id, type });
+    saveToLocalStorage("tableData", storeData);
+  }
 };
+
+export const saveToLocalStorage = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data));
+};
+
+export const loadFromLocalStorage = (key) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+};
+
+const takeFromLocalStorage = () => {
+  const storedData = loadFromLocalStorage("tableData");
+  storedData.forEach((item) => {
+    addToTable(
+      item.date,
+      item.description,
+      item.category,
+      item.amount,
+      item.id,
+      item.type,
+      onDeleteCallback,
+      true
+    );
+  });
+};
+
+window.addEventListener("load", takeFromLocalStorage);
 
 export const addToTotal = function (type, amount) {
   const totalIncome = document.getElementById("total-income");

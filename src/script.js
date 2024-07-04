@@ -2,6 +2,8 @@ import { addToTable } from "./view";
 import { addToTotal } from "./view";
 import { updateChart, updateLineChart } from "./chart.view";
 import { updateColumnChart } from "./chart.view";
+import { saveToLocalStorage } from "./view";
+import { loadFromLocalStorage } from "./view";
 
 class Expense {
   constructor(amount, category, date, description, type, id) {
@@ -19,9 +21,9 @@ class OperationsList {
     this.expenseList = [];
   }
 }
-const operations = new OperationsList();
+export const operations = new OperationsList();
 
-const onDeleteCallback = (expenseId) => {
+export const onDeleteCallback = (expenseId) => {
   const expense = operations.expenseList.find((exp) => exp.id === expenseId);
 
   if (expense) {
@@ -30,6 +32,10 @@ const onDeleteCallback = (expenseId) => {
   operations.expenseList = operations.expenseList.filter(
     (exp) => exp.id !== expenseId
   );
+
+  const storeData = loadFromLocalStorage("tableData");
+  const updatedData = storeData.filter((item) => item.id !== expenseId);
+  saveToLocalStorage("tableData", updatedData);
 };
 
 const form = document.getElementById("income-form");
