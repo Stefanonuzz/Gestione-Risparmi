@@ -118,7 +118,4 @@ document.getElementById("income-form").addEventListener("submit", (event) => {
   updateLineChart(amount, type);
 
   addToTotal(type, amount);
-
-  console.log(newIncome);
-  console.log(operations.expenseList);
 });

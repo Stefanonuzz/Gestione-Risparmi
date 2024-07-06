@@ -52,6 +52,7 @@ export const updateChart = function (category, amount, type) {
     }
 
     pieChart.update();
+    savePieChartData();
   }
 };
 
@@ -64,8 +65,28 @@ export const deleteFromPieChart = function (category, amount) {
       pieChart.data.datasets[0].data.splice(index, 1);
     }
     pieChart.update();
+    savePieChartData();
   }
 };
+
+const savePieChartData = () => {
+  const pieChartData = {
+    labels: pieChart.data.labels,
+    data: pieChart.data.datasets[0].data,
+  };
+  localStorage.setItem("pieChartData", JSON.stringify(pieChartData));
+};
+
+export const loadPieChartData = () => {
+  const savedPieChartData = localStorage.getItem("pieChartData");
+  if (savedPieChartData) {
+    const parsedData = JSON.parse(savedPieChartData);
+    pieChart.data.labels = parsedData.labels;
+    pieChart.data.datasets[0].data = parsedData.data;
+    pieChart.update();
+  }
+};
+
 const columnCanvas = document.getElementById("column-chart");
 
 const columnChart = new Chart(columnCanvas, {
@@ -106,6 +127,7 @@ export const updateColumnChart = function (category, amount, type) {
     }
 
     columnChart.update();
+    saveColumnChartData();
   }
 };
 
@@ -117,6 +139,25 @@ export const deleteFromColumnChart = function (category, amount) {
       columnChart.data.labels.splice(index, 1);
       columnChart.data.datasets[0].data.splice(index, 1);
     }
+    columnChart.update();
+    saveColumnChartData();
+  }
+};
+
+const saveColumnChartData = () => {
+  const columnChartData = {
+    labels: columnChart.data.labels,
+    data: columnChart.data.datasets[0].data,
+  };
+  localStorage.setItem("columnChartData", JSON.stringify(columnChartData));
+};
+
+export const loadColumnChartData = () => {
+  const savedColumnChartData = localStorage.getItem("columnChartData");
+  if (savedColumnChartData) {
+    const parsedData = JSON.parse(savedColumnChartData);
+    columnChart.data.labels = parsedData.labels;
+    columnChart.data.datasets[0].data = parsedData.data;
     columnChart.update();
   }
 };

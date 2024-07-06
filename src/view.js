@@ -5,6 +5,7 @@ import {
 } from "./chart.view";
 import { format, compareAsc } from "date-fns";
 import { onDeleteCallback } from "./script";
+import { loadPieChartData, loadColumnChartData } from "./chart.view";
 
 export const addToTable = function (
   date,
@@ -85,8 +86,6 @@ const takeFromLocalStorage = () => {
   });
 };
 
-window.addEventListener("load", takeFromLocalStorage);
-
 export const addToTotal = function (type, amount) {
   const totalIncome = document.getElementById("total-income");
   const totalExpense = document.getElementById("total-expense");
@@ -106,4 +105,43 @@ export const addToTotal = function (type, amount) {
 
   const totalValue = incomeValue - expenseValue;
   total.textContent = `${totalValue}€`;
+
+  saveTotalsToLocalStorage(incomeValue, expenseValue, totalValue);
 };
+
+const saveTotalsToLocalStorage = function (income, expense, total) {
+  const totals = {
+    income: income,
+    expense: expense,
+    total: total,
+  };
+  localStorage.setItem("totals", JSON.stringify(totals));
+};
+
+const loadTotalsToLocalStorage = () => {
+  const totalsString = localStorage.getItem("totals");
+  if (totalsString !== null) {
+    const totals = JSON.parse(totalsString);
+
+    const { income, expense, total } = totals;
+
+    if (income !== undefined) {
+      document.getElementById("total-income").textContent = `${income}€`;
+    }
+
+    if (expense !== undefined) {
+      document.getElementById("total-expense").textContent = `${expense}€`;
+    }
+
+    if (total !== undefined) {
+      document.getElementById("total-balance").textContent = `${total}€`;
+    }
+  }
+};
+
+window.addEventListener("load", () => {
+  takeFromLocalStorage();
+  loadTotalsToLocalStorage();
+  loadPieChartData();
+  loadColumnChartData();
+});
