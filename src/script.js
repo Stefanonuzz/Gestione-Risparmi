@@ -2,7 +2,7 @@ import { addToTable } from "./view";
 import { addToTotal } from "./view";
 import { updateChart, updateLineChart } from "./chart.view";
 import { updateColumnChart } from "./chart.view";
-import { saveToLocalStorage } from "./view";
+import { saveToLocalStorage, saveTotalsToLocalStorage } from "./view";
 import { loadFromLocalStorage } from "./view";
 
 class Expense {
@@ -20,7 +20,23 @@ class OperationsList {
   constructor() {
     this.expenseList = [];
   }
+
+  loadExpensesFromLocalStorage() {
+    const storedData = loadFromLocalStorage("tableData");
+    this.expenseList = storedData.map(
+      (item) =>
+        new Expense(
+          item.amount,
+          item.category,
+          item.date,
+          item.description,
+          item.type,
+          item.id
+        )
+    );
+  }
 }
+
 export const operations = new OperationsList();
 
 export const onDeleteCallback = (expenseId) => {
@@ -36,6 +52,11 @@ export const onDeleteCallback = (expenseId) => {
   const storeData = loadFromLocalStorage("tableData");
   const updatedData = storeData.filter((item) => item.id !== expenseId);
   saveToLocalStorage("tableData", updatedData);
+  saveTotalsToLocalStorage(
+    parseFloat(document.getElementById("total-income").textContent),
+    parseFloat(document.getElementById("total-expense").textContent),
+    parseFloat(document.getElementById("total-balance").textContent)
+  );
 };
 
 const form = document.getElementById("income-form");
@@ -118,4 +139,5 @@ document.getElementById("income-form").addEventListener("submit", (event) => {
   updateLineChart(amount, type);
 
   addToTotal(type, amount);
+  // todo save to localstorage
 });

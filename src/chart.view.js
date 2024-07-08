@@ -200,6 +200,8 @@ export const updateLineChart = function (amount, type) {
   lineChart.data.labels.push(nextLabel);
 
   lineChart.update();
+
+  saveLineChartData();
 };
 
 export const deleteFromLineChart = function (index) {
@@ -207,8 +209,27 @@ export const deleteFromLineChart = function (index) {
   const currentLabels = lineChart.data.labels;
 
   currentData.splice(index, 1);
-
   currentLabels.splice(index, 1);
 
   lineChart.update();
+
+  saveLineChartData();
+};
+
+const saveLineChartData = () => {
+  const lineChartData = {
+    labels: lineChart.data.labels,
+    data: lineChart.data.datasets[0].data,
+  };
+  localStorage.setItem("lineChartData", JSON.stringify(lineChartData));
+};
+
+export const loadLineChartData = () => {
+  const savedLineChartData = localStorage.getItem("lineChartData");
+  if (savedLineChartData) {
+    const parsedData = JSON.parse(savedLineChartData);
+    lineChart.data.labels = parsedData.labels;
+    lineChart.data.datasets[0].data = parsedData.data;
+    lineChart.update();
+  }
 };

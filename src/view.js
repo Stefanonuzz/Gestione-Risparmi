@@ -2,10 +2,12 @@ import {
   deleteFromPieChart,
   deleteFromColumnChart,
   deleteFromLineChart,
+  loadLineChartData,
 } from "./chart.view";
 import { format, compareAsc } from "date-fns";
 import { onDeleteCallback } from "./script";
 import { loadPieChartData, loadColumnChartData } from "./chart.view";
+import { operations } from "./script";
 
 export const addToTable = function (
   date,
@@ -109,7 +111,7 @@ export const addToTotal = function (type, amount) {
   saveTotalsToLocalStorage(incomeValue, expenseValue, totalValue);
 };
 
-const saveTotalsToLocalStorage = function (income, expense, total) {
+export const saveTotalsToLocalStorage = function (income, expense, total) {
   const totals = {
     income: income,
     expense: expense,
@@ -126,22 +128,24 @@ const loadTotalsToLocalStorage = () => {
     const { income, expense, total } = totals;
 
     if (income !== undefined) {
-      document.getElementById("total-income").textContent = `${income}€`;
+      document.getElementById("total-income").textContent = `${income}`;
     }
 
     if (expense !== undefined) {
-      document.getElementById("total-expense").textContent = `${expense}€`;
+      document.getElementById("total-expense").textContent = `${expense}`;
     }
 
     if (total !== undefined) {
-      document.getElementById("total-balance").textContent = `${total}€`;
+      document.getElementById("total-balance").textContent = `${total}`;
     }
   }
 };
 
 window.addEventListener("load", () => {
+  operations.loadExpensesFromLocalStorage();
   takeFromLocalStorage();
   loadTotalsToLocalStorage();
   loadPieChartData();
   loadColumnChartData();
+  loadLineChartData();
 });
