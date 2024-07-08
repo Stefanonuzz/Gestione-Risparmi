@@ -175,7 +175,16 @@
       <!-- TABELLA -->
       <div class="h-72 grid grid-cols-2 gap-8 ounded-lg shadow-md">
         <div class="bg-white p-4 pb-0 rounded-lg shadow-md overflow-scroll">
-          <h1 class="text-xl font-bold mb-6">Elenco delle spese</h1>
+          <div class="flex justify-between items-center">
+            <h1 class="text-xl font-bold mb-6">Elenco delle spese</h1>
+            <button id="export-button" class="cursor-pointer">
+              <ion-icon
+                name="cloud-download-outline"
+                class="text-2xl"
+                id="export-icon"
+              ></ion-icon>
+            </button>
+          </div>
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>

@@ -128,18 +128,44 @@ const loadTotalsToLocalStorage = () => {
     const { income, expense, total } = totals;
 
     if (income !== undefined) {
-      document.getElementById("total-income").textContent = `${income}`;
+      document.getElementById("total-income").textContent = `${income}€`;
     }
 
     if (expense !== undefined) {
-      document.getElementById("total-expense").textContent = `${expense}`;
+      document.getElementById("total-expense").textContent = `${expense}€`;
     }
 
     if (total !== undefined) {
-      document.getElementById("total-balance").textContent = `${total}`;
+      document.getElementById("total-balance").textContent = `${total}€`;
     }
   }
 };
+
+// EXPORT TO CSV FILE
+export const exportToCSV = () => {
+  const tableData = loadFromLocalStorage("tableData");
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+
+  csvContent += "Date,Description,Category,Amount\n";
+
+  tableData.forEach((item) => {
+    const row = [item.date, item.description, item.category, item.amount];
+    csvContent += row.join(",") + "\n";
+  });
+
+  // DOWNLOAD CSV
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "gestione-risparmi.csv");
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+document.getElementById("export-button").addEventListener("click", exportToCSV);
 
 window.addEventListener("load", () => {
   operations.loadExpensesFromLocalStorage();

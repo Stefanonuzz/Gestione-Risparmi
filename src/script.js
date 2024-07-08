@@ -39,6 +39,8 @@ class OperationsList {
 
 export const operations = new OperationsList();
 
+console.log(operations);
+
 export const onDeleteCallback = (expenseId) => {
   const expense = operations.expenseList.find((exp) => exp.id === expenseId);
 
